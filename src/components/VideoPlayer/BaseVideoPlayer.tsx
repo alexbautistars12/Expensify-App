@@ -210,7 +210,9 @@ function BaseVideoPlayer({
         if (!isUploading || !videoPlayerRef.current) {
             return;
         }
-
+        if(currentVideoPlayerRef.current) {
+            pauseVideo();
+        }
         // If we are uploading a new video, we want to immediately set the video player ref.
         currentVideoPlayerRef.current = videoPlayerRef.current;
     }, [url, currentVideoPlayerRef, isUploading]);
