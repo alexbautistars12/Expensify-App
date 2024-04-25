@@ -63,7 +63,7 @@ function VideoPopoverMenuContextProvider({children}: ChildrenProps) {
         return items;
     }, [currentPlaybackSpeed, downloadAttachment, translate, updatePlaybackSpeed, isOffline, isLocalFile]);
 
-    const contextValue = useMemo(() => ({menuItems, updatePlaybackSpeed}), [menuItems, updatePlaybackSpeed]);
+    const contextValue = useMemo(() => ({menuItems, updatePlaybackSpeed, setCurrentPlaybackSpeed}), [menuItems, updatePlaybackSpeed, setCurrentPlaybackSpeed]);
     return <Context.Provider value={contextValue}>{children}</Context.Provider>;
 }
 
