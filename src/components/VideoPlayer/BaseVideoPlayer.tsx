@@ -129,12 +129,20 @@ function BaseVideoPlayer({
         [playVideo, videoResumeTryNumber],
     );
 
+    useEffect(() => {
+        console.log("isLoading", isLoading);
+    }, [isLoading]);
+
+    useEffect(() => {
+        console.log("isBuffering", isBuffering);
+    }, [isBuffering]);
+
     const handlePlaybackStatusUpdate = useCallback(
         (status: AVPlaybackStatus) => {
             if (!status.isLoaded) {
                 preventPausingWhenExitingFullscreen(false);
                 setIsPlaying(false);
-                setIsLoading(false); // when video is ready to display duration is not NaN
+                setIsLoading(true); // when video is ready to display duration is not NaN
                 setIsBuffering(false);
                 setDuration(videoDuration * 1000);
                 setPosition(0);

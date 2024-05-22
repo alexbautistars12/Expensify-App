@@ -73,6 +73,8 @@ function ImageRenderer({tnode}: ImageRendererProps) {
         />
     );
 
+    console.log("iamgeRender");
+
     return imagePreviewModalDisabled ? (
         thumbnailImageComponent
     ) : (

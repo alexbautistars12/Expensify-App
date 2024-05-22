@@ -12,6 +12,10 @@ import * as DeviceCapabilities from '@libs/DeviceCapabilities';
 import * as ReportUtils from '@libs/ReportUtils';
 import variables from '@styles/variables';
 import CONST from '@src/CONST';
+import AttachmentOfflineIndicator from '@components/AttachmentOfflineIndicator';
+import Text from '@components/Text';
+import useNetwork from '@hooks/useNetwork';
+import ThumbnailImage from '@components/ThumbnailImage';
 
 type VideoPlayerThumbnailProps = {
     /** Url of thumbnail image. */
@@ -26,17 +30,24 @@ type VideoPlayerThumbnailProps = {
 
 function VideoPlayerThumbnail({thumbnailUrl, onPress, accessibilityLabel}: VideoPlayerThumbnailProps) {
     const styles = useThemeStyles();
+    const {isOffline} = useNetwork();
 
     return (
         <View style={styles.flex1}>
             {thumbnailUrl && (
                 <View style={styles.flex1}>
-                    <Image
+                    <ThumbnailImage
+                        style={styles.flex1}
+                        previewSourceURL={thumbnailUrl}
+                        isAuthTokenRequired={!CONST.CLOUDFRONT_DOMAIN_REGEX.test(thumbnailUrl)}
+                        imageHeight={100}
+                    />
+                    {/* <Image
                         source={{uri: thumbnailUrl}}
                         style={styles.flex1}
                         // The auth header is required except for static images on Cloudfront, which makes them fail to load
-                        isAuthTokenRequired={!CONST.CLOUDFRONT_DOMAIN_REGEX.test(thumbnailUrl)}
-                    />
+                        
+                    /> */}
                 </View>
             )}
             <ShowContextMenuContext.Consumer>
@@ -51,7 +62,8 @@ function VideoPlayerThumbnail({thumbnailUrl, onPress, accessibilityLabel}: Video
                         onLongPress={(event) => showContextMenuForReport(event, anchor, report?.reportID ?? '', action, checkIfContextMenuActive, ReportUtils.isArchivedRoom(report))}
                         shouldUseHapticsOnLongPress
                     >
-                        <View style={[styles.videoThumbnailPlayButton]}>
+                        {!isOffline && (
+                            <View style={[styles.videoThumbnailPlayButton]}>
                             <Icon
                                 src={Expensicons.Play}
                                 fill="white"
@@ -60,6 +72,7 @@ function VideoPlayerThumbnail({thumbnailUrl, onPress, accessibilityLabel}: Video
                                 additionalStyles={[styles.ml1]}
                             />
                         </View>
+                        )}
                     </PressableWithoutFeedback>
                 )}
             </ShowContextMenuContext.Consumer>
